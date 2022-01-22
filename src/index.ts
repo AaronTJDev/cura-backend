@@ -1,4 +1,6 @@
-const express = require('express');
+import express from 'express';
+import { db } from './db';
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
