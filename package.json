@@ -8,10 +8,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "prepare": "npm run gcp-build",
+    "pretest": "npm run gcp-build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -e ts  --exec \"npm run compile\"",
+    "start": "node dist/index.js",
+    "dev": "nodemon -e ts  --exec \"npm run compile\"",
     "lint": "eslint . --ext .ts",
-    "compile": "tsc && node dist/index.js"
+    "compile": "tsc && node dist/index.js",
+    "gcp-build": "tsc"
   },
   "dependencies": {
     "@types/express": "^4.17.13",
