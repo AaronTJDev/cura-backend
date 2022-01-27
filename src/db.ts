@@ -1,9 +1,7 @@
-import { initializeApp, applicationDefault, cert } from 'firebase-admin/app';
-import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore';
-const serviceAccount = require('../env/serviceAccountKey.json');
+import { getFirestore } from 'firebase-admin/firestore';
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
+const db = getFirestore();
 
-export const db = getFirestore();
+export = {
+  db
+}
