@@ -2,33 +2,24 @@ import express from 'express';
 import { getAuth } from 'firebase-admin/auth';
 
 // Utils
-import { logError } from '../lib/helpers';
+import { createTokenResponse, logError } from '../lib/helpers';
 
 const authRouter = express.Router();
 
-authRouter.post('/register', (req, res) => {
+authRouter.post('/register', async (req, res) => {
   const { email, password } = req.body;
   if (!!email && !!password) {
-    getAuth()
-      .createUser({
-        email,
-        password
-      })
-      .then((userRecord) => {
-        console.log('Successfully created new user:', userRecord.uid);
-        res.status(200).send(userRecord);
-      }).catch(err => {
-        logError(err);
-        res.status(400).send(err);
-      });
-      return;
+    try {
+      const userRecord = await getAuth().createUser({ email, password });
+      console.log('Successfully created new user:', userRecord.uid);
+      await createTokenResponse(userRecord.uid, res);
+    } catch(err) {
+      logError(err);
+      res.status(400).send(err);
+    }
   } else {
     res.status(400).send('Missing email or password');
   }
-});
-
-authRouter.get('/login', (req, res) => {
-  res.send('auth route');
 });
 
 export {

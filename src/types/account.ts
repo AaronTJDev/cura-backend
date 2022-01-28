@@ -1,10 +1,7 @@
-import { Ingredient } from "./ingredient"
-
 export type Account = {
-  id: number;
+  uid: string;
   email: string;
   username: string;
-  password: string;
   firstName: string;
   imageUri: string;
   createdAt: Date;
