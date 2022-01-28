@@ -6,7 +6,7 @@ import { logError } from '../lib/helpers';
 
 const authRouter = express.Router();
 
-authRouter.get('/register', (req, res) => {
+authRouter.post('/register', (req, res) => {
   const { email, password } = req.body;
   if (!!email && !!password) {
     getAuth()
