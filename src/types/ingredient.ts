@@ -5,6 +5,7 @@ export type Ingredient = {
   description: string;
   imageUri: string;
   substitutes: Ingredient[];
+  recipes: Recipe[];
 }
 
 export type Quantity = {
@@ -15,4 +16,16 @@ export type Quantity = {
 export type IngredientQuantity = {
   ingredient: Ingredient;
   quantity: Quantity;
+}
+
+export type Recipe = {
+  id: number;
+  name: string;
+  ingredients: IngredientQuantity[];
+  description: string;
+  imageUri: string;
+  instructions: string;
+  preparationTime: number;
+  cookingTime: number;
+  servings: number;
 }

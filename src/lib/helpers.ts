@@ -21,3 +21,15 @@ export const createTokenResponse = async ( uid, res ) => {
     res.status(500).send(err);
   }
 }
+
+export const verifyToken = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const decodedToken = await getAuth().verifyIdToken(token);
+    req.user = decodedToken;
+    next();
+  } catch(err) {
+    logError(err);
+    res.status(401).send(err);
+  }
+}
