@@ -12,9 +12,9 @@
     "pretest": "npm run gcp-build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "dev": "nodemon -e ts  --exec \"npm run compile\"",
-    "lint": "eslint . --ext .ts",
+    "dev": "nodemon --watch src/ --exec \"npm run compile\" --verbose -e ts.",
     "compile": "tsc && node dist/index.js",
+    "lint": "eslint . --ext .ts",
     "gcp-build": "tsc"
   },
   "dependencies": {

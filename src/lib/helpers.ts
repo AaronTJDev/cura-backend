@@ -11,16 +11,6 @@ export const initializeFirebase = () => {
   });
 }
 
-export const createTokenResponse = async ( uid, res ) => {
-  try {
-    const token =  await getAuth().createCustomToken(uid);
-    console.log('Successfully created new token:', token);
-    res.status(200).send({ token });
-  } catch(err) {
-    logError(err);
-    res.status(500).send(err);
-  }
-}
 
 export const verifyToken = async (req, res, next) => {
   try {
