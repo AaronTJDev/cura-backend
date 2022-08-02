@@ -1,3 +1,4 @@
+require('dotenv').config();
 import express from 'express';
 
 import { router } from './routes';
@@ -5,6 +6,7 @@ import { initializeFirebase } from './lib/helpers';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+console.log('PROCESS ENVIRONMENT', process.env);
 
 initializeFirebase();
 
