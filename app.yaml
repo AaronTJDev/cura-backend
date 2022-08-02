@@ -2,3 +2,7 @@ runtime: nodejs12
 
 env_variables:
   PORT: "8080"
+  NEO4J_URI: "neo4j+s://7ffe0ac9.databases.neo4j.io"
+  NEO4J_USERNAME: "neo4j"
+  NEO4J_PASSWORD: "D0ZnwRmakQcJbrdrHXssYDgggHS3BJunWkClPqbUBaw"
+  AURA_INSTANCENAME: "Pantrywise"

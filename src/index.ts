@@ -1,5 +1,7 @@
-require('dotenv').config();
 import express from 'express';
+if (!process.env.CLOUDSHELL_ENVIRONMENT) {
+  require('dotenv').config();
+}
 
 import { router } from './routes';
 import { initializeFirebase } from './lib/helpers';
