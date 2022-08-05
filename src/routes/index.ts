@@ -6,7 +6,6 @@ import { pantryRouter } from './pantry';
 
 const router = express.Router();
 
-
 router.use(verifyToken);
 router.use(ingredientRouter);
 router.use(recipeRouter);
