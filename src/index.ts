@@ -9,7 +9,7 @@ import { writeRecord } from './database';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-console.log('PROCESS ENVIRONMENT', process.env);
+console.log('testing nodemon c');
 
 initializeFirebase();
 
