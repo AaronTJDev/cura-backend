@@ -5,11 +5,6 @@ steps:
 - name: node:16.1.0
   entrypoint: npm
   args: ["run"]
-  env:
-    - 'NEO4J_URI=${_NEO4J_URI}'
-    - 'NEO4J_USERNAME=${_NEO4J_USERNAME}'
-    - 'NEO4J_PASSWORD=${_NEO4J_PASSWORD}'
-    - 'AURA_INSTANCENAME=${_AURA_INSTANCENAME}'
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
 timeout: "1600s"
