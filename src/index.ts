@@ -5,19 +5,17 @@ if (!process.env.CLOUDSHELL_ENVIRONMENT) {
 
 import { router } from './routes';
 import { initializeFirebase } from './lib/helpers';
-import { writeRecord } from './database';
+import { getAllSymptoms } from './database/symptoms/read';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-console.log('testing nodemon c');
 
 initializeFirebase();
 
 app.use(express.json());
 app.use(router);
 app.get('/', async (req, res) => {
-  await writeRecord();
-  res.send('Hello World!')
+  res.send('Hello');
 });
 
 app.listen(PORT, () => {
