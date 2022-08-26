@@ -1,4 +1,6 @@
 import { closeSession, openSession } from "..";
+import { logError } from "../../lib/helpers";
+import { errorMessages } from "../errors";
 
 export const getAllSymptoms = async () => {
   const { driver, session } = openSession();
@@ -15,9 +17,38 @@ export const getAllSymptoms = async () => {
     });
     return symptoms;
   } catch (err) {
-    console.log('Err:', err);
+    logError(err);
     throw(err);
   } finally {
     await closeSession(driver, session);
   }
 };
+
+export const getSymptomsByName = async (queryStr: string) => {
+  if (!queryStr) {
+    throw new Error(errorMessages.symptom.queryEmpty);
+  }
+
+  const { driver, session } = openSession();
+  try {
+    const query = `
+    MATCH (s:Symptom)
+    WHERE s.name CONTAINS '${queryStr}'
+    RETURN s.name, s.description`;
+    const result = await session.run(query);
+    const symptoms = result.records.map(record => {
+      return (
+        {
+          name: record.get('s.name'),
+          description: record.get('s.description')
+        }
+      );
+    });
+    return symptoms;
+  } catch (err) {
+    logError(`${err}`);
+    throw(err);
+  } finally {
+    await closeSession(driver, session);
+  }
+}

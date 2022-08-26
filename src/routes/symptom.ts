@@ -1,6 +1,7 @@
+import e from 'express';
 import express from 'express';
 import { errorMessages } from '../database/errors';
-import { getAllSymptoms } from '../database/symptoms/read';
+import { getAllSymptoms, getSymptomsByName } from '../database/symptoms/read';
 
 
 const symptomRouter = express.Router();
@@ -13,6 +14,22 @@ symptomRouter.get('/symptoms', async (req, res) => {
     res.status(500).send(`${errorMessages.symptom.getAllSymptoms}: ${err}`);
   }
 });
+
+symptomRouter.get('/symptoms/search', async (req, res) => {
+  try {
+    const { query } = req.query;
+    if (!!query) {
+      const symptoms = await getSymptomsByName(query as string);
+      res.status(200).send(symptoms);
+    } else {
+      throw new Error(errorMessages.symptom.queryEmpty);
+    }
+
+  } catch(err) {
+    res.status(500).send(`Error fetching query with parameters ${JSON.stringify(req.query)}
+    ${err}`);
+  }
+})
 
 export {
   symptomRouter

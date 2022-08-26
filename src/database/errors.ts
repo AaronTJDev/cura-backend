@@ -7,6 +7,7 @@ interface ErrorMessages {
   },
   symptom: {
     getAllSymptoms: string;
+    queryEmpty: string;
   }
 };
 
@@ -18,6 +19,7 @@ export const errorMessages: ErrorMessages = {
     close: 'There was an issue closing the driver.'
   },
   symptom: {
-    getAllSymptoms: 'There was an issue getting all symptoms.'
-  }
+    getAllSymptoms: 'There was an issue getting all symptoms.',
+    queryEmpty: 'Query string is empty'
+  },
 };
