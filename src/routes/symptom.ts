@@ -1,4 +1,3 @@
-import e from 'express';
 import express from 'express';
 import { errorMessages } from '../database/errors';
 import { getAllSymptoms, getSymptomsByName } from '../database/symptoms/read';

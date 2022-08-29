@@ -1,0 +1,5 @@
+process.env.PORT='8080'
+process.env.NEO4J_URI='neo4j+s://7ffe0ac9.databases.neo4j.io'
+process.env.NEO4J_USERNAME='neo4j'
+process.env.NEO4J_PASSWORD='D0ZnwRmakQcJbrdrHXssYDgggHS3BJunWkClPqbUBaw'
+process.env.AURA_INSTANCENAME='Pantrywise'

@@ -3,7 +3,7 @@ import { logError } from "../../lib/helpers";
 import { errorMessages } from "../errors";
 
 export const getAllSymptoms = async () => {
-  const { driver, session } = openSession();
+  const session = openSession();
   try {
     const query = `MATCH (symptom:Symptom) RETURN symptom.name, symptom.description`;
     const result = await session.run(query);
@@ -20,7 +20,7 @@ export const getAllSymptoms = async () => {
     logError(err);
     throw(err);
   } finally {
-    await closeSession(driver, session);
+    await closeSession(session);
   }
 };
 
@@ -29,7 +29,7 @@ export const getSymptomsByName = async (queryStr: string) => {
     throw new Error(errorMessages.symptom.queryEmpty);
   }
 
-  const { driver, session } = openSession();
+  const session = openSession();
   try {
     const query = `
     MATCH (s:Symptom)
@@ -49,6 +49,6 @@ export const getSymptomsByName = async (queryStr: string) => {
     logError(`${err}`);
     throw(err);
   } finally {
-    await closeSession(driver, session);
+    await closeSession(session);
   }
 }

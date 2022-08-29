@@ -4,25 +4,16 @@ import { errorMessages } from './errors';
 const uri = process.env.NEO4J_URI;
 const user = process.env.NEO4J_USERNAME;
 const password = process.env.NEO4J_PASSWORD;
+const driver = neo4j.driver(uri, neo4j.auth.basic(user, password));
 
-type SessionDriver = {
-  driver: Driver,
-  session: Session
-}
-
-export const openSession = (): SessionDriver => {
-  const driver = neo4j.driver(uri, neo4j.auth.basic(user, password));
+export const openSession = (): Session => {
   const session = driver.session({ database: 'neo4j'});
-  return {
-    driver,
-    session
-  };
+  return session;
 };
 
-export const closeSession = async (driver: Driver, session: Session): Promise<void> => {
+export const closeSession = async (session: Session): Promise<void> => {
   try {
     session.close();
-    driver.close();
   } catch(err) {
     throw new Error(`${errorMessages.session.close}: ${err}`);
   }
