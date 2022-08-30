@@ -1,7 +1,18 @@
 require('dotenv').config();
+import { driver } from '..';
+import { logError } from '../../lib/helpers';
 import { getAllSymptoms, getSymptomsByName } from './read';
 
 describe('Symptoms API Functionality', () => {
+  afterAll(async () => {
+    try {
+      await driver.close();
+    } catch(err) {
+      logError(err);
+      throw err;
+    }
+  });
+
   test('can get all symptoms', async () => {
     expect.assertions(1);
     try {
@@ -17,6 +28,16 @@ describe('Symptoms API Functionality', () => {
     try {
       const symptoms = await getSymptomsByName('pain');
       expect(symptoms.length).toBeGreaterThan(0);
+    } catch (err) {
+      expect(err).toBeDefined();
+    }
+  })
+
+  test('returns an empty array if no results are found', async () => {
+    expect.assertions(1);
+    try {
+      const symptoms = await getSymptomsByName('this is not in database');
+      expect(symptoms.length).toBe(0);
     } catch (err) {
       expect(err).toBeDefined();
     }
