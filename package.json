@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "npm run gcp-build",
     "pretest": "npm run gcp-build",
-    "test": "jest --verbose",
+    "test": "jest --verbose ./src",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts",
@@ -20,6 +20,7 @@
     "@types/express": "^4.17.13",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "eslint": "^8.7.0",
     "express": "^4.17.2",
@@ -37,6 +38,7 @@
     "babel-jest": "^29.0.1",
     "babel-preset-env": "^1.7.0",
     "firebase": "^9.6.5",
+    "googleapis": "^107.0.0",
     "jest": "^29.0.1"
   }
 }

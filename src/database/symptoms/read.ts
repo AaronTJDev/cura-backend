@@ -51,4 +51,4 @@ export const getSymptomsByName = async (queryStr: string) => {
   } finally {
     await closeSession(session);
   }
-}
+};

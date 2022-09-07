@@ -2,15 +2,14 @@ import { applicationDefault, initializeApp} from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
 export const logError = (err: any) => {
-  console.error(err);
-}
+  console.log(err);
+};
 
 export const initializeFirebase = () => {
   initializeApp({
     credential: applicationDefault()
   });
-}
-
+};
 
 export const verifyToken = async (req, res, next) => {
   try {
@@ -28,4 +27,4 @@ export const verifyToken = async (req, res, next) => {
       environment: process.env
     });
   }
-}
+};
