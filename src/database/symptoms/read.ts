@@ -32,9 +32,9 @@ export const getSymptomsByName = async (queryStr: string) => {
   const session = openSession();
   try {
     const query = `
-    MATCH (s:Symptom)
-    WHERE s.name CONTAINS '${queryStr}'
-    RETURN s.name, s.description`;
+    MATCH (symptom:Symptom)
+    WHERE symptom.name CONTAINS '${queryStr}'
+    RETURN symptom.name, symptom.description`;
     const result = await session.run(query);
     const symptoms = result.records.map(record => {
       return (

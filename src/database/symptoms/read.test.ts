@@ -13,7 +13,7 @@ describe('Symptoms API Functionality', () => {
     }
   });
 
-  test('can get all symptoms', async () => {
+  it('can get all symptoms', async () => {
     expect.assertions(1);
     try {
       const symptoms = await getAllSymptoms();
@@ -23,7 +23,7 @@ describe('Symptoms API Functionality', () => {
     }
   });
 
-  test('can get a symptom by name', async () => {
+  it('can get a symptom by name', async () => {
     expect.assertions(1);
     try {
       const symptoms = await getSymptomsByName('pain');
@@ -33,7 +33,7 @@ describe('Symptoms API Functionality', () => {
     }
   })
 
-  test('returns an empty array if no results are found', async () => {
+  it('returns an empty array if no results are found', async () => {
     expect.assertions(1);
     try {
       const symptoms = await getSymptomsByName('this is not in database');
