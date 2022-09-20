@@ -39,8 +39,8 @@ export const getSymptomsByName = async (queryStr: string) => {
     const symptoms = result.records.map(record => {
       return (
         {
-          name: record.get('s.name'),
-          description: record.get('s.description')
+          name: record.get('symptom.name'),
+          description: record.get('symptom.description')
         }
       );
     });
