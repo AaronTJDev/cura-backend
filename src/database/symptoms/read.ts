@@ -5,11 +5,12 @@ import { errorMessages } from "../errors";
 export const getAllSymptoms = async () => {
   const session = openSession();
   try {
-    const query = `MATCH (symptom:Symptom) RETURN symptom.name, symptom.description`;
+    const query = `MATCH (symptom:Symptom) RETURN symptom.name, symptom.description, symptom.id`;
     const result = await session.run(query);
     const symptoms = result.records.map(record => {
       return (
         {
+          id: record.get('symptom.id'),
           name: record.get('symptom.name'),
           description: record.get('symptom.description')
         }

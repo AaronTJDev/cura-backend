@@ -22,10 +22,11 @@ export const getRelatedDiseases = async (symptoms: string[]) => {
       WHERE s.name in symptoms
       WITH disease, size(symptoms) as inputCount, count(DISTINCT s) as cnt
       WHERE cnt = inputCount
-      RETURN disease.name, disease.description`;
+      RETURN disease.name, disease.description, disease.id`;
     const result = await session.run(query);
     const diseases = result.records.map(record => {
       return {
+        id: record.get('disease.id'),
         name: record.get('disease.name'),
         description: record.get('disease.description')
       };
