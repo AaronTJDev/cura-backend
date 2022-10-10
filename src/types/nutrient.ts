@@ -10,7 +10,7 @@ type Interval = "daily" | "weekly" | "monthly" | "annually";
 export type Nutrient = {
   id: string;
   name: string;
-  type: Classificaton;
+  type?: Classificaton;
 }
 
 export interface INutrientSymptomRelationship {

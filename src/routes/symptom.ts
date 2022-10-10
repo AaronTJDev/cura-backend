@@ -28,7 +28,7 @@ symptomRouter.get('/symptoms/search', async (req, res) => {
     res.status(500).send(`Error fetching query with parameters ${JSON.stringify(req.query)}
     ${err}`);
   }
-})
+});
 
 export {
   symptomRouter
