@@ -8,14 +8,16 @@ export const getRelatedNutrients = async (symptomId: string): Promise<Nutrient[]
   try {
     const query = `
     MATCH (s:Symptom {id: '${symptomId}'})<-[r:DEFICIENCY_MAY_CAUSE]-(nutrient:Nutrient)
-    RETURN nutrient.name, nutrient.id
+    RETURN nutrient.name, nutrient.id, r.conclusion, r.references
     `;
     const result = await session.run(query);
     const nutrients = result.records.map(record => {
       return (
         {
           id: record.get('nutrient.id'),
-          name: record.get('nutrient.name')
+          name: record.get('nutrient.name'),
+          conclusion: record.get('r.conclusion'),
+          references: record.get('r.references')
         }
       );
     });

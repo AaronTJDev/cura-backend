@@ -7,19 +7,13 @@ type Classificaton = "carbohydrate" | "protein" | "fat" | "vitamin" | "mineral" 
 
 type Interval = "daily" | "weekly" | "monthly" | "annually";
 
-export type Nutrient = {
+interface INutrientSymptomRelation {
+  conclusion: string;
+  references: string[];
+}
+
+export interface Nutrient extends INutrientSymptomRelation {
   id: string;
   name: string;
   type?: Classificaton;
-}
-
-export interface INutrientSymptomRelationship {
-  id: string;
-  title: string;
-  uri: string;
-  amount: number;
-  interval: Interval;
-  conclusion: string;
-  author: string;
-  publishDate: Date;
 }
