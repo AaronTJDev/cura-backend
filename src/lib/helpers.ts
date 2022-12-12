@@ -23,8 +23,7 @@ export const verifyToken = async (req, res, next) => {
   } catch(err) {
     logError(err);
     res.status(401).send({
-      err,
-      environment: process.env
+      err
     });
   }
 };
