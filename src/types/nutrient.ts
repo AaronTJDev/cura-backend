@@ -8,12 +8,13 @@ type Classificaton = "carbohydrate" | "protein" | "fat" | "vitamin" | "mineral" 
 type Interval = "daily" | "weekly" | "monthly" | "annually";
 
 interface INutrientSymptomRelation {
-  conclusion: string;
+  description: string;
   references: string[];
+  authors: string;
 }
 
 export interface Nutrient extends INutrientSymptomRelation {
-  id: string;
+  id?: string;
   name: string;
   type?: Classificaton;
 }

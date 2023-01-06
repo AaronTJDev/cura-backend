@@ -15,9 +15,9 @@ describe('Nutrient API Functionality', () => {
 
   test("getRelatedNutrients handles a single symptom returning a list of nutrients", async () => {
     expect.assertions(1);
-    const diarrheaSymptomId = '21a8ed4b-1f20-49d4-84da-f321f2fdee74';
+    const symptom = 'headache';
     try {
-      const nutrients = await getRelatedNutrients(diarrheaSymptomId);
+      const nutrients = await getRelatedNutrients(symptom);
       expect(nutrients.length).toBeGreaterThanOrEqual(1);
     } catch (err) {
       expect(err).toBeDefined();
