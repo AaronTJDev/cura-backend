@@ -1,23 +1,14 @@
-export type FoodNutrient = {
-  type: string;
-  id: number;
-  nutrient: {
-    id: number;
-    number: string;
-    name: NutrientName;
-    rank: number;
-    unitName: NutrientUnit
-  };
-  foodNutrientDerivation: {
-    code: string;
-    description: string;
-    foodNutrientSource: {
-      id: number;
-      code: number;
-      description: string
-    }
-  };
-  amount: number
+export type Food = {
+  brandedFoodCategory: string;
+  dataType: string;
+  description: string;
+  fdcId: string | number;
+  foodClass: string;
+  gtinUpc: string | number;
+  ingredients: string;
+  marketCountry: string;
+  servingSize: string | number;
+  servingSizeUnit: string;
 }
 
 type NutrientUnit = 'g' | 'mg' | 'kcal' | 'iu' | 'µg'; 

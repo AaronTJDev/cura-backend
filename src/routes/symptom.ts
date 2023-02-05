@@ -1,6 +1,6 @@
 import express from 'express';
 import { errorMessages } from '../database/errors';
-import { getRelatedNutrients } from '../database/nutrients/read';
+import { getRelatedNutrients } from '../database/symptoms/read';
 import { getAllSymptoms, getSymptomsByName } from '../database/symptoms/read';
 import { logError } from '../lib/helpers';
 
