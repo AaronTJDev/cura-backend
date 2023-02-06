@@ -34,7 +34,7 @@ symptomRouter.get('/symptoms/search', async (req, res) => {
 
 symptomRouter.get('/symptoms/nutrients', async (req, res) => {
   if (!req.query.symptomName) {
-    throw new Error(errorMessages.symptom.symptomNameNotProvidedOrUndefined);
+    throw new Error(errorMessages.symptom.symptomNameUndefined);
   }
 
   try {

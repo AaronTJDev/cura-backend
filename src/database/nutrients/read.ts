@@ -27,8 +27,20 @@ export const getFoodsWithSignificantNutrientAmount = async (
     const query = `
       MATCH (food:Food)<-[r:HAS_NUTRIENT]-(n:Nutrient {name: '${nutrientName}'})
       WHERE (r.amount/toFloat(n.${getGenderAgeRangeString(gender, age)})) > ${threshold}
-      RETURN food LIMIT 25
+      RETURN 
+        food.brandedFoodCategory,
+        food.dataType,
+        food.description,
+        food.fdcId,
+        food.foodClass,
+        food.gtinUpc,
+        food.ingredients,
+        food.marketCountry,
+        food.servingSize,
+        food.servingSizeUnit
+      LIMIT 25
     `;
+
     const result = await session.run(query);
     const foods: Food[] = result.records.map(record => {
       return (
@@ -46,6 +58,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
         }
       );
     });
+
     return foods;
   } catch (err) {
     logError(err);

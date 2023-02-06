@@ -8,9 +8,12 @@ interface ErrorMessages {
   symptom: {
     getAllSymptoms: string;
     queryEmpty: string;
-    symptomNameNotProvidedOrUndefined: string;
+    symptomNameUndefined: string;
   },
   nutrients: {
+    nutrientNameUndefined: string;
+    ageUndefined: string;
+    genderUndefined: string;
   }
 };
 
@@ -24,9 +27,11 @@ export const errorMessages: ErrorMessages = {
   symptom: {
     getAllSymptoms: 'There was an issue getting all symptoms.',
     queryEmpty: 'Query string is empty',
-    symptomNameNotProvidedOrUndefined: 'Symptom name not provided or undefined'
+    symptomNameUndefined: 'Symptom name is undefined'
   },
   nutrients: {
-    nutrientIdNotProvidedOrUndefined: 'Nutrient ID not provided or undefined'
+    nutrientNameUndefined: 'Nutrient name is undefined',
+    ageUndefined: 'Age is undefined',
+    genderUndefined: 'Gender is undefined'
   }
 };
