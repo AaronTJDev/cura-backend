@@ -10,6 +10,8 @@ type NutrientRequestBody = {
   gender: string;
   nutrientName: string;
   threshold?: number;
+  pageNumber?: string | number;
+  pageOffset?: number;
 }
 
 nutrientRouter.get('/nutrients/food', async (req, res) => {
@@ -18,9 +20,25 @@ nutrientRouter.get('/nutrients/food', async (req, res) => {
       throw new Error(errorMessages.nutrients.nutrientNameUndefined);
     }
     
-    // @ts-ignore
-    const { age, gender, nutrientName, threshold } = req.query as NutrientRequestBody;
-    const nutrients = await getFoodsWithSignificantNutrientAmount(nutrientName, gender, age, threshold);
+    const {
+      age,
+      gender,
+      nutrientName,
+      threshold,
+      pageNumber,
+      pageOffset
+      // @ts-ignore
+    } = req.query as NutrientRequestBody;
+
+    const nutrients = await getFoodsWithSignificantNutrientAmount(
+      nutrientName,
+      gender,
+      age,
+      threshold,
+      pageNumber,
+      pageOffset
+    );
+
     res.status(200).send(nutrients);
   } catch(err) {
     logError(err);

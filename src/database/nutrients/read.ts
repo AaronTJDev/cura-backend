@@ -1,5 +1,5 @@
 import { closeSession, openSession } from "..";
-import { getGenderAgeRangeString, logError } from "../../lib/helpers";
+import { getGenderAgeRangeString, getPaginationString, logError } from "../../lib/helpers";
 import { Food } from "../../types/food";
 import { Nutrient } from "../../types/nutrient";
 import { errorMessages } from "../errors";
@@ -19,11 +19,14 @@ export const getFoodsWithSignificantNutrientAmount = async (
   nutrientName: string,
   gender: string,
   age: number | string,
-  threshold?: number
+  threshold?: number,
+  pageNumber?: number | string,
+  pageOffset?: number
 ): Promise<Food[]> => {
   threshold = threshold ? threshold : 0.5 ;
   const session = openSession();
   try {
+    pageNumber = getPaginationString(pageNumber, pageOffset);
     const query = `
       MATCH (food:Food)<-[r:HAS_NUTRIENT]-(n:Nutrient {name: '${nutrientName}'})
       WHERE (r.amount/toFloat(n.${getGenderAgeRangeString(gender, age)})) > ${threshold}
@@ -37,7 +40,12 @@ export const getFoodsWithSignificantNutrientAmount = async (
         food.ingredients,
         food.marketCountry,
         food.servingSize,
-        food.servingSizeUnit
+        food.servingSizeUnit,
+        r.amount,
+        r.unitName,
+        n.name
+      ORDER BY r.amount DESC
+      ${pageNumber}
       LIMIT 25
     `;
 
@@ -54,7 +62,10 @@ export const getFoodsWithSignificantNutrientAmount = async (
           ingredients: record.get('food.ingredients'),
           marketCountry: record.get('food.marketCountry'),
           servingSize: record.get('food.servingSize'),
-          servingSizeUnit: record.get('food.servingSizeUnit')
+          servingSizeUnit: record.get('food.servingSizeUnit'),
+          amount: record.get('r.amount'),
+          unitName: record.get('r.unitName'),
+          name: record.get('n.name')
         }
       );
     });

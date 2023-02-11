@@ -71,3 +71,13 @@ export const getGenderAgeRangeString = (gender: string, age: number | string) =>
   }
 };
 
+export const getPaginationString = (pageNumber?: number | string, pageOffset?: number) => {
+  if (!pageNumber || parseInt(pageNumber as string) === 1) {
+    return '';
+  }
+
+  const DEFAULT_NUMBER_OF_ITEMS_PER_PAGE = 25;
+  pageOffset = pageOffset ?? DEFAULT_NUMBER_OF_ITEMS_PER_PAGE;
+
+  return `SKIP ${parseInt(pageNumber as string) * pageOffset}`;
+};

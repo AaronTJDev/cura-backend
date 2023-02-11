@@ -1,5 +1,5 @@
 import { AgeRanges } from "../types/account";
-import { getAgeRange, getGenderAgeRangeString } from "./helpers"
+import { getAgeRange, getGenderAgeRangeString, getPaginationString } from "./helpers"
 
 describe('testing helper functions', () => {
   test('getAgeRange | returns the correct age range', () => {
@@ -41,4 +41,15 @@ describe('testing helper functions', () => {
     expect(getGenderAgeRangeString(gender, age)).toBe(`${gender}_${getAgeRange(age)}`);
   });
 
+  test('getPaginationString | input that is undefined returns an empty string', () => {
+    expect(getPaginationString(undefined)).toBe('');
+  });
+
+  test('getPaginationString | input with pageNumber defined and pageOffset undefined returns pageNumber * DEFAULT_NUMBER_OF_ITEMS_PER_PAGE', () => {
+    expect(getPaginationString(5)).toBe('SKIP 125');
+  });
+
+  test('getPaginationString | input with pageNumber defined and pageOffset defined returns pageNumber * pageOffset', () => {
+    expect(getPaginationString(5, 10)).toBe('SKIP 50');
+  });
 })
