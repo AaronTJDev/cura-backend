@@ -1,6 +1,7 @@
 import { applicationDefault, initializeApp} from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { AgeRanges } from '../types/account';
+import { DEFAULT_NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 
 export const logError = (err: any) => {
   console.log(err);
@@ -76,7 +77,6 @@ export const getPaginationString = (pageNumber?: number | string, pageOffset?: n
     return '';
   }
 
-  const DEFAULT_NUMBER_OF_ITEMS_PER_PAGE = 25;
   pageOffset = pageOffset ?? DEFAULT_NUMBER_OF_ITEMS_PER_PAGE;
 
   return `SKIP ${parseInt(pageNumber as string) * pageOffset}`;

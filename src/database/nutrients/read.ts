@@ -1,8 +1,7 @@
 import { closeSession, openSession } from "..";
+import { DEFAULT_FOOD_RESULT_LIMIT } from "../../lib/constants";
 import { getGenderAgeRangeString, getPaginationString, logError } from "../../lib/helpers";
 import { Food } from "../../types/food";
-import { Nutrient } from "../../types/nutrient";
-import { errorMessages } from "../errors";
 
 /**
  * 
@@ -10,6 +9,9 @@ import { errorMessages } from "../errors";
  * @param gender user's gender
  * @param age user's age
  * @param threshold Significance threshold.
+ * @param pageNumber variable for pagination offset calculation
+ * @param pageOffset variable for how many items to skip over in pagination offset calculation | default 25
+ * @param limit the number of items that will be returned | default 25
  * For the given nutrient it will only return foods that cotain an amount that is greater than
  * ${threshold} * the recommended daily allowance of that nutrient for a given gender and age range.
  * Default value: 0.5
@@ -21,12 +23,15 @@ export const getFoodsWithSignificantNutrientAmount = async (
   age: number | string,
   threshold?: number,
   pageNumber?: number | string,
-  pageOffset?: number
+  pageOffset?: number,
+  limit?: number
 ): Promise<Food[]> => {
   threshold = threshold ? threshold : 0.5 ;
   const session = openSession();
   try {
     pageNumber = getPaginationString(pageNumber, pageOffset);
+    limit = limit ?? DEFAULT_FOOD_RESULT_LIMIT;
+
     const query = `
       MATCH (food:Food)<-[r:HAS_NUTRIENT]-(n:Nutrient {name: '${nutrientName}'})
       WHERE (r.amount/toFloat(n.${getGenderAgeRangeString(gender, age)})) > ${threshold}
@@ -46,7 +51,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
         n.name
       ORDER BY r.amount DESC
       ${pageNumber}
-      LIMIT 25
+      LIMIT ${limit}
     `;
 
     const result = await session.run(query);
