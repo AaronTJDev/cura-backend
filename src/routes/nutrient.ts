@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, RequestHandler, Response } from 'express';
 import { logError } from '../lib/helpers';
 import { errorMessages } from '../database/errors';
 import { getFoodsWithSignificantNutrientAmount } from '../database/nutrients/read';
@@ -14,9 +14,10 @@ type NutrientRequestBody = {
   pageOffset?: number;
 }
 
-nutrientRouter.get('/nutrients/food', async (req, res) => {
+
+nutrientRouter.post('/nutrients/food', async (req, res) => {
   try {
-    if (!req.query.nutrientName) {
+    if (!req?.body && !req.body.nutrientName) {
       throw new Error(errorMessages.nutrients.nutrientNameUndefined);
     }
     
@@ -26,18 +27,19 @@ nutrientRouter.get('/nutrients/food', async (req, res) => {
       nutrientName,
       threshold,
       pageNumber,
-      pageOffset
-      // @ts-ignore
-    } = req.query as NutrientRequestBody;
+      pageOffset,
+      filter
+    } = req.body;
 
-    const nutrients = await getFoodsWithSignificantNutrientAmount(
+    const nutrients = await getFoodsWithSignificantNutrientAmount({
       nutrientName,
       gender,
       age,
       threshold,
       pageNumber,
-      pageOffset
-    );
+      pageOffset,
+      filter
+    });
 
     res.status(200).send(nutrients);
   } catch(err) {

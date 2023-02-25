@@ -1,5 +1,10 @@
 import { AgeRanges } from "../types/account";
-import { getAgeRange, getGenderAgeRangeString, getPaginationString } from "./helpers"
+import {
+  getAgeRange,
+  getFilterString,
+  getGenderAgeRangeString,
+  getPaginationString
+} from "./helpers"
 
 describe('testing helper functions', () => {
   test('getAgeRange | returns the correct age range', () => {
@@ -51,5 +56,19 @@ describe('testing helper functions', () => {
 
   test('getPaginationString | input with pageNumber defined and pageOffset defined returns pageNumber * pageOffset', () => {
     expect(getPaginationString(5, 10)).toBe('SKIP 50');
+  });
+
+  test('getFilterString | input with a falsy value returns an empty string', () => {
+    expect(getFilterString(undefined)).toBe('');
+  });
+
+  test('getFilterString | input with a single item array returns a string formatted like an array', () => {
+    const filterValues = ['hello'];
+    expect(getFilterString(filterValues)).toBe('["hello"]');
+  });
+
+  test('getFilterString | input with a multi item array returns a string formatted like an multi-item array', () => {
+    const filterValues = ['hello', 'world'];
+    expect(getFilterString(filterValues)).toBe('["hello", "world"]');
   });
 })

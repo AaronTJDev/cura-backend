@@ -1,40 +1,63 @@
+import { query } from "express";
 import { closeSession, openSession } from "..";
 import { DEFAULT_FOOD_RESULT_LIMIT } from "../../lib/constants";
-import { getGenderAgeRangeString, getPaginationString, logError } from "../../lib/helpers";
+import { composeFilterQuery, getGenderAgeRangeString, getPaginationString, logError } from "../../lib/helpers";
 import { Food } from "../../types/food";
+
+type getFoodsOptions = {
+  nutrientName: string;
+  gender: string;
+  age: number | string;
+  threshold?: number;
+  pageNumber?: number | string;
+  pageOffset?: number;
+  limit?: number;
+  filter?: string[];
+};
 
 /**
  * 
- * @param nutrientName name of the nutrient
- * @param gender user's gender
- * @param age user's age
- * @param threshold Significance threshold.
- * @param pageNumber variable for pagination offset calculation
- * @param pageOffset variable for how many items to skip over in pagination offset calculation | default 25
- * @param limit the number of items that will be returned | default 25
+ * @param options
+ * @param options.nutrientName name of the nutrient
+ * @param options.gender user's gender
+ * @param options.age user's age
+ * @param options.threshold Significance threshold.
+ * @param options.pageNumber variable for pagination offset calculation
+ * @param options.pageOffset variable for how many items to skip over in pagination offset calculation | default 25
+ * @param options.limit the number of items that will be returned | default 25
+ * @param options.filter a URL encoded list of filter options
  * For the given nutrient it will only return foods that cotain an amount that is greater than
  * ${threshold} * the recommended daily allowance of that nutrient for a given gender and age range.
  * Default value: 0.5
  * @returns 
  */
 export const getFoodsWithSignificantNutrientAmount = async (
-  nutrientName: string,
-  gender: string,
-  age: number | string,
-  threshold?: number,
-  pageNumber?: number | string,
-  pageOffset?: number,
-  limit?: number
+ options: getFoodsOptions
 ): Promise<Food[]> => {
+  let {
+    nutrientName,
+    gender,
+    age,
+    threshold,
+    pageNumber,
+    pageOffset,
+    limit,
+    filter
+  } = options;
   threshold = threshold ? threshold : 0.5 ;
-  const session = openSession();
-  try {
-    pageNumber = getPaginationString(pageNumber, pageOffset);
-    limit = limit ?? DEFAULT_FOOD_RESULT_LIMIT;
+  pageNumber = getPaginationString(pageNumber, pageOffset);
+  limit = limit ?? DEFAULT_FOOD_RESULT_LIMIT;
+  const filterQuery = composeFilterQuery(filter);
 
+  const session = openSession();
+
+  try {
+    // @to-do add filters to query
     const query = `
+      ${!!filter ? filterQuery : ''}
       MATCH (food:Food)<-[r:HAS_NUTRIENT]-(n:Nutrient {name: '${nutrientName}'})
       WHERE (r.amount/toFloat(n.${getGenderAgeRangeString(gender, age)})) > ${threshold}
+      ${!!filter ? ' AND food.brandedFoodCategory IN filter' : ''}
       RETURN 
         food.brandedFoodCategory,
         food.dataType,
@@ -83,5 +106,3 @@ export const getFoodsWithSignificantNutrientAmount = async (
     await closeSession(session);
   }
 };
-
-

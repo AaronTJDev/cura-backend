@@ -7,6 +7,8 @@ export const logError = (err: any) => {
   console.log(err);
 };
 
+// Auth Helpers
+
 export const initializeFirebase = () => {
   initializeApp({
     credential: applicationDefault()
@@ -29,6 +31,8 @@ export const verifyToken = async (req, res, next) => {
     });
   }
 };
+
+// Food API helpers
 
 /**
  * Takes an age as an input and returns the age range the age falls into.
@@ -72,12 +76,46 @@ export const getGenderAgeRangeString = (gender: string, age: number | string) =>
   }
 };
 
-export const getPaginationString = (pageNumber?: number | string, pageOffset?: number) => {
-  if (!pageNumber || parseInt(pageNumber as string) === 1) {
+export const getPaginationString = (pageNumber, pageOffset?) => {
+  if (!pageNumber || parseInt(pageNumber) === 1) {
     return '';
   }
 
   pageOffset = pageOffset ?? DEFAULT_NUMBER_OF_ITEMS_PER_PAGE;
 
-  return `SKIP ${parseInt(pageNumber as string) * pageOffset}`;
+  return `SKIP ${parseInt(pageNumber) * pageOffset}`;
+};
+
+export const getFilterString = (filters?: string[]): string => {
+  if (!filters?.length) {
+    return '';
+  }
+
+  if (filters.length === 1) {
+    return `["${filters[0]}"]`;
+  }
+
+  let filterString = '';
+  const lastItemIndex = filters.length - 1;
+
+  filterString = filters.reduce((acc, curr, currIndex) => {
+    if (currIndex === 0) {
+      return `["${curr}"` ;
+    } else if (lastItemIndex === currIndex) {
+      return `${acc}, "${curr}"]`;
+    }
+
+    return `${acc}, "${curr}"`;
+  }, filterString)
+  
+  
+  return filterString;
+};
+
+export const composeFilterQuery = (filterString: string[]) => {
+  if (!filterString) {
+    return '';
+  }
+
+  return `WITH ${getFilterString(filterString)} as filter`
 };
