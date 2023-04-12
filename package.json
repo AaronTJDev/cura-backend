@@ -1,6 +1,6 @@
 {
   "name": "pantrywise-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "backend for pantrywise app",
   "main": "dist/index.js",
   "repository": "https://github.com/AaronTJDev/pantrywise-backend.git",
