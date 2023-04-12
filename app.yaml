@@ -2,7 +2,6 @@ runtime: nodejs16
 
 env_variables:
   PORT: "8080"
-  NEO4J_URI: "neo4j+s://7ffe0ac9.databases.neo4j.io"
+  NEO4J_URI: "bolt://35.215.69.83:7687"
   NEO4J_USERNAME: "neo4j"
-  NEO4J_PASSWORD: "D0ZnwRmakQcJbrdrHXssYDgggHS3BJunWkClPqbUBaw"
-  AURA_INSTANCENAME: "Pantrywise"
+  NEO4J_PASSWORD: "finish-ribbon-ariel-lithium-archer-5829"
