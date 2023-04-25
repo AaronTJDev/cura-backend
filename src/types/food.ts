@@ -1,4 +1,5 @@
 export type Food = {
+  suggestionKey: string;
   brandedFoodCategory: string;
   dataType: string;
   description: string;

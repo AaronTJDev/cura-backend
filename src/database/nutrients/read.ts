@@ -81,6 +81,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
     const foods: Food[] = result.records.map(record => {
       return (
         {
+          suggestionKey: nutrientName,
           brandedFoodCategory: record.get('food.brandedFoodCategory'),
           dataType: record.get('food.dataType'),
           description: record.get('food.description'),
