@@ -17,4 +17,5 @@ export interface Nutrient extends INutrientSymptomRelation {
   id?: string;
   name: string;
   type?: Classificaton;
+  symptomKey: string;
 }

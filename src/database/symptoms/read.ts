@@ -68,7 +68,8 @@ export const getRelatedNutrients = async (symptom: string): Promise<Nutrient[] |
           name: record.get('nutrient.name'),
           description: record.get('r.description'),
           references: record.get('r.reference'),
-          authors: record.get('r.authors')
+          authors: record.get('r.authors'),
+          symptomKey: symptom
         }
       );
     });
