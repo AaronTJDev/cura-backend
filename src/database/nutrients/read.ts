@@ -1,11 +1,11 @@
 import { query } from "express";
 import { closeSession, openSession } from "..";
 import { DEFAULT_FOOD_RESULT_LIMIT } from "../../lib/constants";
-import { composeFilterQuery, getGenderAgeRangeString, getPaginationString, logError } from "../../lib/helpers";
+import { composeFilterQuery, formatArrayForNeo4j, getGenderAgeRangeString, getPaginationString, logError } from "../../lib/helpers";
 import { Food } from "../../types/food";
 
 type getFoodsOptions = {
-  nutrientName: string;
+  nutrientName: string[];
   gender: string;
   age: number | string;
   threshold?: number;
@@ -52,13 +52,16 @@ export const getFoodsWithSignificantNutrientAmount = async (
   const session = openSession();
 
   try {
-    // @to-do add filters to query
     const query = `
-      ${!!filter ? filterQuery : ''}
-      MATCH (food:Food)<-[r:HAS_NUTRIENT]-(n:Nutrient {name: '${nutrientName}'})
+      WITH ${formatArrayForNeo4j(nutrientName)} as nutrients ${!!filter ? filterQuery : ''}
+      MATCH (food:Food)<-[r:HAS_NUTRIENT]-(n:Nutrient)
       WHERE (r.amount/toFloat(n.${getGenderAgeRangeString(gender, age)})) > ${threshold}
-      ${!!filter ? ' AND food.brandedFoodCategory IN filter' : ''}
+      ${!!filter ? ' AND food.brandedFoodCategory IN filters' : ''}
+      AND n.name IN nutrients
+      SET food.matchedKey = n.name
+
       RETURN 
+        food.matchedKey,
         food.brandedFoodCategory,
         food.dataType,
         food.description,
@@ -70,8 +73,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
         food.servingSize,
         food.servingSizeUnit,
         r.amount,
-        r.unitName,
-        n.name
+        r.unitName
       ORDER BY r.amount DESC
       ${pageNumber}
       LIMIT ${limit}
@@ -81,7 +83,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
     const foods: Food[] = result.records.map(record => {
       return (
         {
-          suggestionKey: nutrientName,
+          matchedKey: record.get('food.matchedKey'),
           brandedFoodCategory: record.get('food.brandedFoodCategory'),
           dataType: record.get('food.dataType'),
           description: record.get('food.description'),
@@ -93,8 +95,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
           servingSize: record.get('food.servingSize'),
           servingSizeUnit: record.get('food.servingSizeUnit'),
           amount: record.get('r.amount'),
-          unitName: record.get('r.unitName'),
-          name: record.get('n.name')
+          unitName: record.get('r.unitName')
         }
       );
     });

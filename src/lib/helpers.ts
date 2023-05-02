@@ -86,7 +86,7 @@ export const getPaginationString = (pageNumber, pageOffset?) => {
   return `SKIP ${parseInt(pageNumber) * pageOffset}`;
 };
 
-export const getFilterString = (filters?: string[]): string => {
+export const formatArrayForNeo4j = (filters?: string[]): string => {
   if (!filters?.length) {
     return '';
   }
@@ -117,5 +117,5 @@ export const composeFilterQuery = (filterString: string[]) => {
     return '';
   }
 
-  return `WITH ${getFilterString(filterString)} as filter`
+  return `, ${formatArrayForNeo4j(filterString)} as filters`
 };

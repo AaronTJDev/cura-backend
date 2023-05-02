@@ -8,7 +8,7 @@ const nutrientRouter = express.Router();
 type NutrientRequestBody = {
   age: number | string;
   gender: string;
-  nutrientName: string;
+  nutrientName: string[];
   threshold?: number;
   pageNumber?: string | number;
   pageOffset?: number;

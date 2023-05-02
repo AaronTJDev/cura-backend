@@ -1,7 +1,7 @@
 import { AgeRanges } from "../types/account";
 import {
   getAgeRange,
-  getFilterString,
+  formatArrayForNeo4j,
   getGenderAgeRangeString,
   getPaginationString
 } from "./helpers"
@@ -58,17 +58,17 @@ describe('testing helper functions', () => {
     expect(getPaginationString(5, 10)).toBe('SKIP 50');
   });
 
-  test('getFilterString | input with a falsy value returns an empty string', () => {
-    expect(getFilterString(undefined)).toBe('');
+  test('formatArrayForNeo4j | input with a falsy value returns an empty string', () => {
+    expect(formatArrayForNeo4j(undefined)).toBe('');
   });
 
-  test('getFilterString | input with a single item array returns a string formatted like an array', () => {
+  test('formatArrayForNeo4j | input with a single item array returns a string formatted like an array', () => {
     const filterValues = ['hello'];
-    expect(getFilterString(filterValues)).toBe('["hello"]');
+    expect(formatArrayForNeo4j(filterValues)).toBe('["hello"]');
   });
 
-  test('getFilterString | input with a multi item array returns a string formatted like an multi-item array', () => {
+  test('formatArrayForNeo4j | input with a multi item array returns a string formatted like an multi-item array', () => {
     const filterValues = ['hello', 'world'];
-    expect(getFilterString(filterValues)).toBe('["hello", "world"]');
+    expect(formatArrayForNeo4j(filterValues)).toBe('["hello", "world"]');
   });
 })

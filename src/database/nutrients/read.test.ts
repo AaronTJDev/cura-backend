@@ -17,7 +17,7 @@ describe('Nutrient API Functionality', () => {
     expect.assertions(1);
     const age = 25;
     const gender = 'female';
-    const nutrientName = 'calcium| ca';
+    const nutrientName = ['calcium| ca'];
     
     try {
       const foods = await getFoodsWithSignificantNutrientAmount({ nutrientName, gender, age });
@@ -32,13 +32,14 @@ describe('Nutrient API Functionality', () => {
     expect.assertions(1);
     const age = 25;
     const gender = 'female';
-    const nutrientName = 'calcium| ca';
+    const nutrientName = ['calcium| ca'];
     const threshold = 50000;
 
     try {
       const nutrients = await getFoodsWithSignificantNutrientAmount({ nutrientName, gender, age, threshold });
       expect(nutrients.length).toBe(0);
     } catch (err) {
+      console.log("ERROR", err);
       expect(err).toBeDefined();
       throw err;
     }
