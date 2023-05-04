@@ -13,6 +13,7 @@ type getFoodsOptions = {
   pageOffset?: number;
   limit?: number;
   filter?: string[];
+  symptomKey?: string;
 };
 
 /**
@@ -42,7 +43,8 @@ export const getFoodsWithSignificantNutrientAmount = async (
     pageNumber,
     pageOffset,
     limit,
-    filter
+    filter,
+    symptomKey
   } = options;
   threshold = threshold ? threshold : 0.5 ;
   pageNumber = getPaginationString(pageNumber, pageOffset);
@@ -95,7 +97,8 @@ export const getFoodsWithSignificantNutrientAmount = async (
           servingSize: record.get('food.servingSize'),
           servingSizeUnit: record.get('food.servingSizeUnit'),
           amount: record.get('r.amount'),
-          unitName: record.get('r.unitName')
+          unitName: record.get('r.unitName'),
+          symptomKey: symptomKey
         }
       );
     });

@@ -28,7 +28,8 @@ nutrientRouter.post('/nutrients/food', async (req, res) => {
       threshold,
       pageNumber,
       pageOffset,
-      filter
+      filter,
+      symptomKey
     } = req.body;
 
     const nutrients = await getFoodsWithSignificantNutrientAmount({
@@ -38,7 +39,8 @@ nutrientRouter.post('/nutrients/food', async (req, res) => {
       threshold,
       pageNumber,
       pageOffset,
-      filter
+      filter,
+      symptomKey
     });
 
     res.status(200).send(nutrients);
