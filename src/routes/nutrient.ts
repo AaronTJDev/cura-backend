@@ -1,4 +1,4 @@
-import express, { Request, RequestHandler, Response } from 'express';
+import express from 'express';
 import { logError } from '../lib/helpers';
 import { errorMessages } from '../database/errors';
 import { getFoodsWithSignificantNutrientAmount } from '../database/nutrients/read';
@@ -13,7 +13,6 @@ type NutrientRequestBody = {
   pageNumber?: string | number;
   pageOffset?: number;
 }
-
 
 nutrientRouter.post('/nutrients/food', async (req, res) => {
   try {

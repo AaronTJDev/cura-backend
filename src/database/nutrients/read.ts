@@ -53,6 +53,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
 
   const session = openSession();
 
+
   try {
     const query = `
       WITH ${formatArrayForNeo4j(nutrientName)} as nutrients ${!!filter ? filterQuery : ''}
@@ -61,6 +62,7 @@ export const getFoodsWithSignificantNutrientAmount = async (
       ${!!filter ? ' AND food.brandedFoodCategory IN filters' : ''}
       AND n.name IN nutrients
       SET food.matchedKey = n.name
+      SET food.symptomKey = n.symptomKey
 
       RETURN 
         food.matchedKey,
@@ -111,3 +113,26 @@ export const getFoodsWithSignificantNutrientAmount = async (
     await closeSession(session);
   }
 };
+
+/**
+ * Things that happen during a search:
+  * 1. User selects symptoms
+  * 2. Server receives symptoms and queries databases for nutrients related to those symptoms
+  * 3. Server returns nutrients
+  * 4. Client automatically queries for foods that contain those nutrients
+  * 3. Server returns foods
+ * 
+ * Technical details of each step:
+ * 1. User selects symptoms:
+ *   - User selects symptoms from a list of symptoms
+ *   - User can select multiple symptoms
+ *   - User presses search button
+ *   - Client sends symptoms to server
+ * 
+ * 2. Server receives symptoms and queries databases for nutrients related to those symptoms
+ *  - Server receives symptoms from client
+ *  - Server queries database for nutrients related to those symptoms
+ *  - Server returns nutrients with key of symptom that matches the symptom selected by the user
+ * 
+ * 
+ */
