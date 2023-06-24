@@ -70,6 +70,15 @@ subscriptionRouter.post('/create-subscription', async (req, res) => {
   }
 });
 
+subscriptionRouter.get('/plans', async (req, res) => {
+  try {
+    const plans = await stripe.products.list();
+    res.status(200).send(plans);
+  } catch (error) {
+    return res.status(400).send({ error: { message: error.message } });
+  }
+});
+
 export {
   subscriptionRouter
 };
