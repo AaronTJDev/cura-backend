@@ -5,3 +5,4 @@ env_variables:
   NEO4J_URI: "bolt://35.215.69.83:7687"
   NEO4J_USERNAME: "neo4j"
   NEO4J_PASSWORD: "finish-ribbon-ariel-lithium-archer-5829"
+  STRIPE_KEY: "sk_test_51MGRWZDtLolnusdDSVwuXDbU0WwY8B3isrfMDJQevo0bMsVsqoKzezl1bvIeSdlmg6vmadoGAl9W7EXqdIsEmuma00C5ZdqWx9"
