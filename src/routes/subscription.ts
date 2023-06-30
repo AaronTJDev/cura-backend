@@ -15,9 +15,8 @@ type UserOptions = {
   };
 }
 
-const handleMissingInfoError = ({ email, name, address, metadata } : UserOptions) => {
+const handleMissingInfoError = ({ email, address, metadata } : UserOptions) => {
   if (!email) throw new Error('Email not provided or undefined.');
-  if (!name) throw new Error('Name not provided or undefined.');
   if (!address) throw new Error('Address not provided or undefined.');
   if (!metadata.internalId) throw new Error('Internal customer ID not provided or undefined.');
 };
@@ -28,12 +27,9 @@ subscriptionRouter.post('/create-customer', async (req, res) => {
     handleMissingInfoError({ email, name, address, metadata });
     const customer = await stripe.customers.create({
       email,
-      name,
       address,
       metadata
     });
-
-    console.log('customer', customer);
     res.status(201).send(customer);
   } catch (error) {
     return res.status(400).send({ error: { message: error.message } });
@@ -41,9 +37,7 @@ subscriptionRouter.post('/create-customer', async (req, res) => {
 });
 
 subscriptionRouter.post('/create-subscription', async (req, res) => {
-  const customerId = req.body.customerId;
-  const priceId = req.body.priceId
-
+  const { customerId, priceId } = req.body;
   try {
     // Create the subscription. Note we're expanding the Subscription's
     // latest invoice and that invoice's payment_intent
