@@ -1,5 +1,5 @@
 import express from 'express';
-import { logError } from '../lib/helpers';
+import { logError, logRequest } from '../lib/helpers';
 import { errorMessages } from '../database/errors';
 import { getFoodsWithSignificantNutrientAmount } from '../database/nutrients/read';
 
@@ -16,6 +16,7 @@ type NutrientRequestBody = {
 
 nutrientRouter.post('/nutrients/food', async (req, res) => {
   try {
+    logRequest(req);
     if (!req?.body && !req.body.nutrientName) {
       throw new Error(errorMessages.nutrients.nutrientNameUndefined);
     }

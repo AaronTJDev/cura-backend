@@ -1,5 +1,6 @@
 import express from 'express';
 import Stripe from 'stripe';
+import { logRequest } from '../lib/helpers';
 
 const subscriptionRouter = express.Router();
 const stripe = new Stripe(process.env.STRIPE_KEY, {
@@ -24,6 +25,7 @@ const handleMissingInfoError = ({ email, address, metadata } : UserOptions) => {
 subscriptionRouter.post('/create-customer', async (req, res) => {
   const { email, name, address, metadata } = req.body;
   try {
+    logRequest(req);
     handleMissingInfoError({ email, name, address, metadata });
     const customer = await stripe.customers.create({
       email,
@@ -42,6 +44,7 @@ subscriptionRouter.post('/create-subscription', async (req, res) => {
     // Create the subscription. Note we're expanding the Subscription's
     // latest invoice and that invoice's payment_intent
     // so we can pass it to the front end to confirm the payment
+    logRequest(req);
     const subscription = await stripe.subscriptions.create({
       customer: customerId,
       items: [{
@@ -66,6 +69,7 @@ subscriptionRouter.post('/create-subscription', async (req, res) => {
 
 subscriptionRouter.get('/plans', async (req, res) => {
   try {
+    logRequest(req);
     const plans = await stripe.products.list();
     res.status(200).send(plans);
   } catch (error) {

@@ -1,10 +1,21 @@
 import { applicationDefault, initializeApp} from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+
+
 import { AgeRanges } from '../types/account';
 import { DEFAULT_NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 
-export const logError = (err: any) => {
+const logging = require('@google-cloud/logging-bunyan');
+
+export const logError = (err: any,) => {
   console.log(err);
+};
+
+export const logRequest = (request: any) => {
+  request.log.info('request body');
+  request.log.info(request.body);
+  request.log.info('request params');
+  request.log.info(request.params);
 };
 
 // Auth Helpers

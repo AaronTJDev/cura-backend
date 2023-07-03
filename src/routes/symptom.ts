@@ -2,13 +2,14 @@ import express from 'express';
 import { errorMessages } from '../database/errors';
 import { getRelatedNutrients } from '../database/symptoms/read';
 import { getAllSymptoms, getSymptomsByName } from '../database/symptoms/read';
-import { logError } from '../lib/helpers';
+import { logError, logRequest } from '../lib/helpers';
 
 
 const symptomRouter = express.Router();
 
 symptomRouter.get('/symptoms', async (req, res) => {
   try {
+    logRequest(req);
     const symptoms = await getAllSymptoms();
     res.status(200).send(symptoms);
   } catch(err) {
@@ -18,7 +19,9 @@ symptomRouter.get('/symptoms', async (req, res) => {
 
 symptomRouter.get('/symptoms/search', async (req, res) => {
   try {
+    logRequest(req);
     const { query } = req.query;
+
     if (!!query) {
       const symptoms = await getSymptomsByName(query as string);
       res.status(200).send(symptoms);
@@ -36,8 +39,9 @@ symptomRouter.get('/symptoms/nutrients', async (req, res) => {
   if (!req.query.symptomName) {
     throw new Error(errorMessages.symptom.symptomNameUndefined);
   }
-
+  
   try {
+    logRequest(req);
     const { symptomName } = req.query;
     const nutrients = await getRelatedNutrients(symptomName as string);
     res.status(200).send(nutrients);
